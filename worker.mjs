@@ -22,7 +22,11 @@ const headers = {
 };
 
 function json(body, status = 200) {
-  return Response.json(body, { status, headers: { ...headers, "Cache-Control": "no-store" } });
+  return new Response(JSON.stringify(body), { status, headers: {
+    ...headers,
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store",
+  } });
 }
 
 function error(status, message) {

@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+cd -- "$(dirname -- "$0")"
+export BIND_HOST=0.0.0.0 PORT=9000
+exec /var/lang/node20/bin/node server.mjs
