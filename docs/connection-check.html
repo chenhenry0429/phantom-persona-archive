@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phantom 问答连接检查</title>
+<style>
+  body { margin: 32px auto; padding: 0 18px; max-width: 680px; background: #141015; color: #f8eee9; font: 16px/1.6 system-ui, sans-serif; }
+  a { color: #ffda59; }
+  button { margin: 0 6px 8px 0; padding: 8px 13px; color: #151016; background: #ffda59; border: 0; border-radius: 4px; font: inherit; cursor: pointer; }
+  textarea { width: 100%; box-sizing: border-box; padding: 12px; color: #f8eee9; background: #211a23; border: 1px solid #776b77; border-radius: 4px; }
+</style>
+<h1>Phantom 问答连接检查</h1>
+<p>用同一浏览器先关闭 VPN 点一次，再开启 VPN 点一次。最后点「复制结果」发给我。这只检查连接，不会发出真实提问。</p>
+<p id="target"></p>
+<button type="button" data-mode="VPN 关闭">VPN 已关闭，检查</button>
+<button type="button" data-mode="VPN 开启">VPN 已开启，检查</button>
+<button type="button" id="copy">复制结果</button>
+<p id="progress" role="status"></p>
+<textarea id="results" aria-label="连接检查结果" rows="13" readonly></textarea>
+<p><a href="./">返回主页</a></p>
+<script type="module">
+  const current = 'https://phantom-profile-henry-chen.chenhenry860.chatgpt.site';
+  let backend = new URL(current);
+  const candidate = new URLSearchParams(location.search).get('backend');
+  if (candidate) {
+    try {
+      const url = new URL(candidate);
+      if (/\.(?:tencentscf\.com|workers\.dev)$/i.test(url.hostname) &&
+          url.protocol === 'https:' && !url.username && !url.password && !url.port &&
+          url.pathname === '/' && !url.search && !url.hash) backend = url;
+    } catch { /* Keep the existing deployment for an invalid address. */ }
+  }
+  document.querySelector('#target').textContent = '测试地址 ' + backend.origin;
+  const progress = document.querySelector('#progress');
+  const results = document.querySelector('#results');
+  const buttons = [...document.querySelectorAll('[data-mode]')];
+  const runs = new Map();
+
+  async function probe(label, address, init = {}) {
+    const start = performance.now();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    try {
+      const response = await fetch(address, { ...init, credentials: 'omit', redirect: 'manual', cache: 'no-store', signal: controller.signal });
+      if (response.type === 'opaqueredirect') return `${label}：发生重定向`;
+      const type = response.headers.get('content-type')?.split(';')[0] || '未提供类型';
+      let detail = '';
+      if (label === '状态' && type === 'application/json') {
+        const data = await response.json();
+        const model = /^[a-z0-9_.-]{1,48}$/i.test(data?.model) ? data.model : '未提供';
+        detail = `，configured=${data?.configured === true}，model=${model}`;
+      }
+      return `${label}：HTTP ${response.status}，${type}，${Math.round(performance.now() - start)} ms${detail}`;
+    } catch (error) {
+      const issue = controller.signal.aborted ? '超时' : '浏览器无法读取响应';
+      return `${label}：${issue}，${Math.round(performance.now() - start)} ms`;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function run(mode) {
+    buttons.forEach(button => { button.disabled = true; });
+    progress.textContent = '检查中…';
+    const lines = await Promise.all([
+      probe('主页', './'),
+      probe('脚本', './app.js'),
+      probe('图片', './creator-photo.webp'),
+      probe('状态', new URL('/api/status', backend)),
+      probe('空 JSON（浏览器自动预检）', new URL('/api/chat', backend), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}',
+      }),
+    ]);
+    runs.set(mode, `${mode}（手动标记） ${new Date().toISOString()}\n${lines.join('\n')}`);
+    results.value = [`页面 ${location.origin}${location.pathname}`, `问答 ${backend.origin}`, ...runs.values()].join('\n\n');
+    progress.textContent = '本次检查完成。复制结果即可分享。';
+    buttons.forEach(button => { button.disabled = false; });
+  }
+
+  for (const button of buttons) button.addEventListener('click', () => run(button.dataset.mode));
+  document.querySelector('#copy').addEventListener('click', async () => {
+    if (!results.value) return;
+    try {
+      await navigator.clipboard.writeText(results.value);
+      progress.textContent = '已复制。';
+    } catch {
+      results.focus();
+      results.select();
+      progress.textContent = '已选中结果，请使用浏览器的复制操作。';
+    }
+  });
+</script>
+</html>
