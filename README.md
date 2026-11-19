@@ -29,12 +29,10 @@
 - 配好模型后执行 `npm run evaluate`。脚本请求 24 个事实、设计取舍、边界、攻击类问题，并将真实 HTTP 状态、回答和用时写入 `eval-results.json`。每次测试会消耗实际模型额度。逐条对照判定标准后再写测试通过率和改进记录。
 - 期末报告可据实记录模型服务商、测试返回的模型名称、实际托管平台、资料准备与提示词调优、测试结果，以及期中与期末的页面改动。使用课程要求的 PDF 文件名 `Henry Chen_Personal Homepage Final Version.pdf`。
 
-## 无 VPN 连接排查和迁移候选
+## 无 VPN 连接排查
 
 当前 Pages 仍使用原 Sites 问答域名。2026 年 11 月 16 日的 Edge 对照中，关闭浏览器代理后，GitHub Pages 页面和静态资源返回 200，问答预检返回 Cloudflare 403 HTML。系统默认代理下，状态为 200 JSON、预检 204、空 JSON 为 400。作者也确认，关闭 VPN 后直接打开状态接口失败，开启后看到 JSON。
 
 [连接检查页](https://chenhenry0429.github.io/phantom-persona-archive/connection-check.html) 可在同一浏览器记录两个网络状态，检查状态和带自动预检的空 JSON POST。复制结果只包含测试状态、时间和公开地址，不包含对话或密钥。
-
-腾讯云广州 SCF 候选包使用原 Worker 与资料，直接调用 DeepSeek API。候选包已通过本机接口和模拟问答验证，等待部署和目标网络实测。参见 [部署与回退说明](deploy/scf/README.md)。
 
 [Phantom Search 源码](https://github.com/chenhenry0429/phantom-search) · [DeepSeek API 文档](https://api-docs.deepseek.com/api/create-chat-completion/) · [阿里云百炼模型价格](https://help.aliyun.com/zh/model-studio/model-pricing)
