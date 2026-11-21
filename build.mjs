@@ -10,6 +10,10 @@ const assets = {
   "/creator-photo.webp": ["image/webp", await read("creator-photo.webp", "base64"), true],
   "/joker.svg": ["image/svg+xml; charset=utf-8", await read("joker.svg")],
 };
+for (const name of ["headphones", "rice-roll", "guangzhou", "keyboard-cat"]) {
+  const path = `/assets/after-class/${name}.webp`;
+  assets[path] = ["image/webp", await read(path.slice(1), "base64"), true];
+}
 
 if (process.argv.includes("--github-pages")) {
   const output = new URL("dist/github-pages/", root);
@@ -24,6 +28,7 @@ if (process.argv.includes("--github-pages")) {
   await writeFile(new URL("index.html", output), html);
   for (const path of Object.keys(assets).filter((path) => path !== "/")) {
     const name = path.slice(1);
+    await mkdir(new URL(name.slice(0, name.lastIndexOf("/") + 1), output), { recursive: true });
     await copyFile(new URL(name, root), new URL(name, output));
   }
 }

@@ -104,6 +104,16 @@ h2{font-size:clamp(35px,6vw,62px);letter-spacing:-.06em;line-height:1.14;font-we
 .profile-detail{margin-top:10px;color:var(--dim);font-size:14px}
 .profile-detail summary{width:fit-content;color:var(--yellow);font-weight:700;cursor:pointer}
 .profile-notes .profile-detail p{margin-top:6px}
+.life-photo{position:relative;margin:20px 3px 16px;padding:9px 9px 10px;background:var(--cream);color:var(--ink);border:1px solid var(--ink);box-shadow:4px 4px 0 var(--red)}
+.life-photo::before{content:"";position:absolute;top:-8px;left:calc(50% - 23px);width:46px;height:15px;background:var(--yellow);transform:rotate(-7deg);border-inline:1px dashed #100e1044}
+.life-photo img{display:block;width:auto;max-width:100%;height:auto;max-height:230px;margin-inline:auto;object-fit:contain}
+.life-photo figcaption{margin-top:9px;font-size:14px;line-height:1.6;letter-spacing:0;overflow-wrap:anywhere}
+.life-photo figcaption small{display:block;font-size:12px;color:#53444b;margin-top:3px}
+.image-sources{padding-top:20px;font:14px/1.7 var(--body);letter-spacing:0}
+.image-sources summary{width:fit-content;cursor:pointer;color:var(--yellow)}
+.image-sources a{text-decoration:underline;text-underline-offset:3px}
+.image-sources p,.image-sources li{overflow-wrap:anywhere}
+.image-sources ul{padding-left:22px}
 .work-section{border-block:1px solid var(--line);background:#141014}
 .work-card{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);min-height:315px}
 .work-art{position:relative;min-height:230px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle,#171015bb 1px,transparent 1.6px) 0 0/7px 7px,linear-gradient(142deg,#140e12 14%,#a8081e 14.3% 55%,#e51431 55.2% 64%,#24121a 64.2%)}

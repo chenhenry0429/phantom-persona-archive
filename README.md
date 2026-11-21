@@ -4,6 +4,10 @@
 
 [GitHub Pages 主页](https://chenhenry0429.github.io/phantom-persona-archive/) · [同源问答入口](https://phantom-profile-henry-chen.chenhenry860.chatgpt.site/#echo)
 
+## 生活配图
+
+「下课之后」的四个生活小节展开后显示本地 WebP 配图与图注，收起时一并隐藏。来源、作者、许可与修改说明见页面底部「图片来源」和 [ASSET-LICENSES.md](ASSET-LICENSES.md)。肠粉与广州图片的转换版本沿用 CC BY-SA 4.0。
+
 ## 本机运行
 
 1. 安装 Node.js 24。在解压后的目录打开 PowerShell。
@@ -22,7 +26,7 @@
 
 - 本机使用 Node.js HTTP 服务。部署到 Sites 时，`npm run build` 生成 Cloudflare Worker ES 模块 `dist/server/index.js`。使用平台的服务端机密配置 `MODEL_API_KEY`，并按需设置 `MODEL_PROVIDER`、`MODEL_NAME`。
 - 若部署到 Node.js 服务器，使用环境变量配置密钥和端口，以 HTTPS 反向代理向外提供同源网页和 API。
-- 运行 `npm run build:pages`，将 `dist/github-pages/` 的六个文件同步到 `docs/`，并保留 `docs/.nojekyll`。提交源码和静态产物。GitHub Pages 选择 `main` 分支的 `/docs` 目录。PowerShell 同步命令为 `Copy-Item dist/github-pages/* docs/ -Force`。
+- 运行 `npm run build:pages`，将 `dist/github-pages/` 的文件及 `assets/` 子目录同步到 `docs/`，并保留 `docs/.nojekyll`。提交源码和静态产物。GitHub Pages 选择 `main` 分支的 `/docs` 目录。PowerShell 同步命令为 `Copy-Item dist/github-pages/* docs/ -Recurse -Force`。
 - `PAGES_CHAT_API` 可作为构建时的公开后端 HTTPS Origin，默认指向已有 Sites 后端。GitHub Pages Origin 为 `https://chenhenry0429.github.io`，Worker 向该 Origin 返回跨站响应头。Sites 入口使用同源问答。
 - `GET /api/status` 读取服务端配置状态。匿名访客若看到连接失败，可使用「重试连接」和「复制诊断信息」，也可尝试同源问答入口。诊断只包含时间、页面与接口地址、错误类别和可读取的 HTTP 状态。
 - 正式提交前，用老师实际访问的网络打开公开链接，确认首页能加载并能提交自由问题。国内网络可达性需要实际验证。
