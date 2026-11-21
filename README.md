@@ -2,7 +2,7 @@
 
 个人主页期末版源码，包含创作者照片卡、雨宫莲互动、40 条本地冷笑话和基于公开档案的数字分身。网页沿用 Phantom Search 的红黑黄、斜切和角色插画。
 
-[GitHub Pages 主页](https://chenhenry0429.github.io/phantom-persona-archive/) · [同源问答入口](https://phantom-profile-henry-chen.chenhenry860.chatgpt.site/#echo)
+[GitHub Pages 主页](https://chenhenry0429.github.io/phantom-persona-archive/) · [问答服务状态](https://stylpjkkvvqg.sealosbja.site/api/status)
 
 ## 生活配图
 

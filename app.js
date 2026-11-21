@@ -7,7 +7,6 @@ const chatHelp = document.querySelector("#chat-help");
 const chatError = document.querySelector("#chat-error");
 const chatRetry = document.querySelector("#chat-retry");
 const chatCopy = document.querySelector("#chat-copy");
-const chatDirect = document.querySelector("#chat-direct");
 const chatDiagnostics = document.querySelector("#chat-diagnostics");
 const log = document.querySelector("#messages");
 const portrait = document.querySelector("#portrait");
@@ -18,7 +17,6 @@ const mascotClose = document.querySelector("#mascot-close");
 const mascotJoke = document.querySelector("#mascot-joke");
 const mascotQuiet = document.querySelector("#mascot-quiet");
 const chatApi = document.querySelector('meta[name="chat-api-base"]')?.content || "";
-if (chatApi) chatDirect.href = `${chatApi}/#echo`;
 const welcome = log.firstElementChild.cloneNode(true);
 const greetings = ["要聊聊吗？", "下一条线索，由你来问。", "来问问 Henry 的作品吧！"];
 const jokes = [
@@ -262,7 +260,6 @@ function showChatError(problem) {
   ].join("\n");
   chatDiagnostics.hidden = true;
   chatCopy.textContent = "复制诊断信息";
-  chatDirect.hidden = !chatApi || code === "api-error" || code === "unconfigured";
   chatHelp.hidden = false;
 }
 

@@ -17,7 +17,7 @@ for (const name of ["headphones", "rice-roll", "guangzhou", "keyboard-cat"]) {
 
 if (process.argv.includes("--github-pages")) {
   const output = new URL("dist/github-pages/", root);
-  const backend = new URL(process.env.PAGES_CHAT_API || "https://phantom-profile-henry-chen.chenhenry860.chatgpt.site");
+  const backend = new URL(process.env.PAGES_CHAT_API || "https://stylpjkkvvqg.sealosbja.site");
   if (backend.protocol !== "https:" || backend.username || backend.password ||
       backend.pathname !== "/" || backend.search || backend.hash) {
     throw new Error("PAGES_CHAT_API must be a public HTTPS origin.");
